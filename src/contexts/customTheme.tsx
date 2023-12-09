@@ -3,7 +3,7 @@ import React, {
   createContext,
   useContext,
   useCallback,
-  useEffect,
+  useMemo,
 } from 'react';
 
 import {
@@ -13,24 +13,52 @@ import {
 import { useColorScheme } from 'react-native';
 import { useMMKVObject } from 'react-native-mmkv';
 
+import { storage } from '../storage';
+
 const ThemeContext = createContext({});
+
+const fonts = {
+  family: {
+    extraBold: 'NunitoSansExtraBold',
+    bold: 'NunitoSansBold',
+    regular: 'NunitoSansRegular',
+    light: 'NunitoSansLight',
+    medium: 'NunitoSansMedium',
+  },
+  sizes: {
+    title: 32,
+    subtitle: 24,
+    regular: 16,
+    medium: 14,
+    tiny: 12,
+  },
+};
 
 const LightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#fafafa',
-    text: '#333',
+    background: '#f2f2f2',
+    text: '#111',
+    statusBar: '#f2f2f2',
+    icon: '#111',
+    attention: '#d00',
+    card: '#fff',
   },
+  fonts,
 };
 
 const DarkTheme = {
   ...DefaultDarkTheme,
   colors: {
     ...DefaultDarkTheme.colors,
-    background: '#333',
-    text: '#fafafa',
+    background: '#111',
+    text: '#f2f2f2',
+    statusBar: '#111',
+    attention: '#d00',
+    card: '#222',
   },
+  fonts,
 };
 
 export const ThemeProvider = ({
@@ -42,42 +70,37 @@ export const ThemeProvider = ({
 
   const [userPreferences, setUserPreferences] = useMMKVObject<{
     darkMode: boolean;
-  }>('userPreferences');
+  }>('userPreferences', storage);
 
   const [darkMode, setDarkMode] = useState<boolean>(
     userPreferences?.darkMode ?? scheme === 'dark'
   );
-  const [palette, setPalette] = useState(
-    scheme === 'dark' ? DarkTheme : LightTheme
-  );
+  const [palette, setPalette] = useState(darkMode ? DarkTheme : LightTheme);
 
   const handleThemeToggle = useCallback(() => {
-    setDarkMode(!darkMode);
-    setPalette(userPreferences?.darkMode ? DarkTheme : LightTheme);
-    setUserPreferences({ darkMode: !darkMode });
+    setDarkMode(currentDarkMode => {
+      setUserPreferences({ darkMode: !currentDarkMode });
+      setPalette(!currentDarkMode ? DarkTheme : LightTheme);
+      return !currentDarkMode;
+    });
   }, [darkMode]);
 
-  useEffect(() => {
-    if (!userPreferences) {
-      setUserPreferences({ darkMode: scheme === 'dark' });
-    }
-  }, []);
+  const valueMemo = useMemo(
+    () => ({
+      darkMode,
+      handleThemeToggle,
+      palette,
+    }),
+    [darkMode, handleThemeToggle, palette]
+  );
 
   return (
-    <ThemeContext.Provider
-      value={{
-        darkMode,
-        handleThemeToggle,
-        palette,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={valueMemo}>{children}</ThemeContext.Provider>
   );
 };
 
 interface ThemeContextProps {
-  currentTheme: 'dark' | 'light';
+  darkMode: boolean;
   handleThemeToggle(): void;
   palette: typeof LightTheme | typeof DarkTheme;
 }

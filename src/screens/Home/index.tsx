@@ -1,31 +1,38 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 
+import Icon from '@expo/vector-icons/FontAwesome5';
+import { Pressable } from 'react-native';
+
+import * as S from './styles';
 import { useAuth } from '../../contexts/auth';
 import { useCustomTheme } from '../../contexts/customTheme';
+import useTypedNavigation from '../../hooks/useTypedNavigation';
 
-export default function Home() {
-  const { userInfo, handleSignOut } = useAuth();
-  const { handleThemeToggle } = useCustomTheme();
+function Home() {
+  const { userInfo } = useAuth();
+  const { palette } = useCustomTheme();
+  const navigation = useTypedNavigation();
+
   return (
-    <View style={styles.container}>
-      <Text>Home</Text>
-      <Text>{userInfo?.user?.name}</Text>
-      <Pressable onPress={handleSignOut}>
-        <Text>Deslogar</Text>
-      </Pressable>
+    <S.Container>
+      <S.Header>
+        <S.UserInfo>
+          {userInfo?.user?.photo && (
+            <S.Photo
+              source={{
+                uri: userInfo?.user?.photo,
+              }}
+            />
+          )}
 
-      <Pressable onPress={handleThemeToggle}>
-        <Text>Toggle theme</Text>
-      </Pressable>
-    </View>
+          <S.UserGreeting>Olá, {userInfo?.user.givenName}</S.UserGreeting>
+        </S.UserInfo>
+        <Pressable onPress={() => navigation.navigate('Settings')}>
+          <Icon name="cog" size={24} color={palette.colors.text} />
+        </Pressable>
+      </S.Header>
+    </S.Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default React.memo(Home);

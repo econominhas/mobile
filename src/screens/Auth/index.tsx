@@ -1,15 +1,18 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
-import { StyleSheet, Text, View } from 'react-native';
 
+import * as S from './styles';
 import { useAuth } from '../../contexts/auth';
+import { useCustomTheme } from '../../contexts/customTheme';
 
-export default function Auth() {
+function Auth() {
   const { handleOnLoginFinished } = useAuth();
+
+  const { darkMode } = useCustomTheme();
 
   const signIn = useCallback(async () => {
     try {
@@ -21,37 +24,22 @@ export default function Auth() {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingVertical: 24,
-        }}
-      >
-        <Text style={{ fontFamily: 'NunitoSansExtraBold', fontSize: 32 }}>
-          Econominhas
-        </Text>
-        <Text style={{ fontFamily: 'NunitoSansRegular', fontSize: 12 }}>
-          Acesse sua conta com um clique!
-        </Text>
-      </View>
+    <S.Container>
+      <S.Title>Econominhas</S.Title>
+      <S.Subtitle>Faça login com um clique!</S.Subtitle>
 
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Light}
+        color={
+          darkMode
+            ? GoogleSigninButton.Color.Light
+            : GoogleSigninButton.Color.Dark
+        }
         onPress={signIn}
         disabled={false}
       />
-    </View>
+    </S.Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default React.memo(Auth);

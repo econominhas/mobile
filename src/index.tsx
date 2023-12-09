@@ -1,25 +1,19 @@
 import React from 'react';
 
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeProvider } from 'styled-components';
 
 import AuthProvider from './contexts/auth';
-import ThemeProvider, { useCustomTheme } from './contexts/customTheme';
+import { useCustomTheme } from './contexts/customTheme';
 import { MainNavigator } from './navigation';
 
-GoogleSignin.configure({
-  webClientId:
-    '489785083174-0rqt9bc7l9t09luor3fc16h21kdf57q7.apps.googleusercontent.com',
-  scopes: ['profile', 'email'],
-  offlineAccess: true,
-});
-
-export default function App() {
-  const { palette } = useCustomTheme();
+function App() {
+  const { palette, darkMode } = useCustomTheme();
   const [fontsLoaded] = useFonts({
+    NunitoSansLight: require('../assets/fonts/NunitoSansLight.ttf'),
     NunitoSansBold: require('../assets/fonts/NunitoSansBold.ttf'),
     NunitoSansExtraBold: require('../assets/fonts/NunitoSansExtraBold.ttf'),
     NunitoSansMedium: require('../assets/fonts/NunitoSansMedium.ttf'),
@@ -29,10 +23,16 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style="auto" />
-      <ThemeProvider>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: palette.colors.background }}
+    >
+      <StatusBar
+        style={darkMode ? 'light' : 'dark'}
+        backgroundColor={palette.colors.statusBar}
+      />
+      <ThemeProvider theme={palette}>
         <NavigationContainer theme={palette}>
           <AuthProvider>
             <MainNavigator />
@@ -42,3 +42,5 @@ export default function App() {
     </SafeAreaView>
   );
 }
+
+export default React.memo(App);
