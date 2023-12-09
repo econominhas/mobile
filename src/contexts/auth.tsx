@@ -1,4 +1,10 @@
-import React, { useState, useCallback, createContext, useContext } from 'react';
+import React, {
+  useState,
+  useCallback,
+  createContext,
+  useContext,
+  useMemo,
+} from 'react';
 
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 
@@ -28,19 +34,26 @@ export const AuthProvider = ({
     navigation.navigate('Auth');
   }, []);
 
+  const valueMemo = useMemo(
+    () => ({
+      isSigned,
+      setIsSigned,
+      userInfo,
+      setUserInfo,
+      handleOnLoginFinished,
+      handleSignOut,
+    }),
+    [
+      isSigned,
+      setIsSigned,
+      userInfo,
+      setUserInfo,
+      handleOnLoginFinished,
+      handleSignOut,
+    ]
+  );
   return (
-    <AuthContext.Provider
-      value={{
-        isSigned,
-        setIsSigned,
-        userInfo,
-        setUserInfo,
-        handleOnLoginFinished,
-        handleSignOut,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={valueMemo}>{children}</AuthContext.Provider>
   );
 };
 
