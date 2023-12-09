@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const httpClient = axios.create({
-  baseURL: 'https://api.example.com', // Replace with your API base URL
-  timeout: 5000, // Set a timeout of 5 seconds,
+  baseURL: 'https://econominhas.com.br/api',
+  timeout: 5000,
 });
 
 httpClient.interceptors.request.use(

@@ -1,9 +1,22 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-function Home() {
+import { useAuth } from '../../contexts/auth';
+import { useCustomTheme } from '../../contexts/customTheme';
+
+export default function Home() {
+  const { userInfo, handleSignOut } = useAuth();
+  const { handleThemeToggle } = useCustomTheme();
   return (
     <View style={styles.container}>
-      <Text>Home template</Text>
+      <Text>Home</Text>
+      <Text>{userInfo?.user?.name}</Text>
+      <Pressable onPress={handleSignOut}>
+        <Text>Deslogar</Text>
+      </Pressable>
+
+      <Pressable onPress={handleThemeToggle}>
+        <Text>Toggle theme</Text>
+      </Pressable>
     </View>
   );
 }
@@ -11,10 +24,8 @@ function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
-
-export default Home;
