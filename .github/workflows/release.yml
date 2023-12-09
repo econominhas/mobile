@@ -1,0 +1,48 @@
+name: Deploy release
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  release-deploy:
+    runs-on:
+      labels: ubuntu-latest
+
+    steps:
+      - name: 🏗 Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+          node-version-file: .nvmrc
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 🚀 Create release update and Sentry upload
+        run: |
+          echo "Running eas update..."
+          last_commit_message=$(git log -1 --pretty=format:%s)
+
+          eas update --branch ${{ github.ref == 'refs/heads/main' }} && production || development --message "$last_commit_message"
