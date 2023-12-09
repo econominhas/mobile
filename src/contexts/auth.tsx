@@ -10,7 +10,7 @@ import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 
 import useTypedNavigation from '../hooks/useTypedNavigation';
 
-const AuthContext = createContext({});
+export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider = ({
   children,
@@ -37,20 +37,12 @@ export const AuthProvider = ({
   const valueMemo = useMemo(
     () => ({
       isSigned,
-      setIsSigned,
       userInfo,
       setUserInfo,
       handleOnLoginFinished,
       handleSignOut,
     }),
-    [
-      isSigned,
-      setIsSigned,
-      userInfo,
-      setUserInfo,
-      handleOnLoginFinished,
-      handleSignOut,
-    ]
+    [isSigned, userInfo, setUserInfo, handleOnLoginFinished, handleSignOut]
   );
   return (
     <AuthContext.Provider value={valueMemo}>{children}</AuthContext.Provider>
@@ -59,8 +51,8 @@ export const AuthProvider = ({
 
 interface AuthContextProps {
   isSigned: boolean;
-  userInfo: User;
-  setUserInfo: React.Dispatch<React.SetStateAction<User>>;
+  userInfo: User | undefined;
+  setUserInfo: React.Dispatch<React.SetStateAction<User | undefined>>;
   handleOnLoginFinished(userInfo: User): void;
   handleSignOut(): void;
 }

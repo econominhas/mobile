@@ -15,7 +15,7 @@ import { useMMKVObject } from 'react-native-mmkv';
 
 import { storage } from '../storage';
 
-const ThemeContext = createContext({});
+export const ThemeContext = createContext({} as ThemeContextProps);
 
 const fonts = {
   family: {
