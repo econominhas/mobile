@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./google-services.json",
@@ -35,6 +37,11 @@
       }
     },
     "owner": "vkzera",
-    "plugins": ["@react-native-google-signin/google-signin"]
+    "plugins": [
+      "@react-native-google-signin/google-signin"
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/ca980805-e57a-46b9-99c0-71417e7701e4"
+    }
   }
 }
