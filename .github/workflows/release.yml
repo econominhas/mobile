@@ -3,8 +3,7 @@ name: Deploy release
 on:
   push:
     branches:
-      - main
-      - development
+      - release
 
 jobs:
   release-deploy:
