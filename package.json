@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@commitlint/cli": "^18.0.0",
+    "@commitlint/config-conventional": "^18.0.0",
     "@testing-library/react-native": "^12.4.1",
     "@types/jest": "^29.5.10",
     "@types/react": "~18.2.14",
@@ -49,6 +51,11 @@
   },
   "jest": {
     "preset": "jest-expo"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "license": "MIT",
   "private": true,
