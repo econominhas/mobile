@@ -1,7 +1,6 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-import App from './src';
-import { default as CustomThemeProvider } from './src/contexts/customTheme';
+import { App } from './src';
 
 GoogleSignin.configure({
   webClientId:
@@ -11,11 +10,7 @@ GoogleSignin.configure({
 });
 
 function Main() {
-  return (
-    <CustomThemeProvider>
-      <App />
-    </CustomThemeProvider>
-  );
+  return <App />;
 }
 
 export default Main;

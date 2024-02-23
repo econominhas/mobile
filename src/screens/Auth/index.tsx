@@ -4,15 +4,12 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import { Text, View } from 'react-native';
 
-import * as S from './styles';
-import { useAuth } from '../../contexts/auth';
-import { useCustomTheme } from '../../contexts/customTheme';
+import { useAuth } from '~/contexts/auth';
 
-function Auth() {
+export function Auth() {
   const { handleOnLoginFinished } = useAuth();
-
-  const { darkMode } = useCustomTheme();
 
   const signIn = useCallback(async () => {
     try {
@@ -24,22 +21,15 @@ function Auth() {
   }, []);
 
   return (
-    <S.Container>
-      <S.Title>Econominhas</S.Title>
-      <S.Subtitle>Faça login com um clique!</S.Subtitle>
+    <View className="flex-1 items-center justify-center gap-4 bg-zinc-900">
+      <Text className="text-[32px] font-bold text-white">Econominhas</Text>
+      <Text className="text-white">Faça login com um clique!</Text>
 
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
-        color={
-          darkMode
-            ? GoogleSigninButton.Color.Light
-            : GoogleSigninButton.Color.Dark
-        }
         onPress={signIn}
         disabled={false}
       />
-    </S.Container>
+    </View>
   );
 }
-
-export default React.memo(Auth);

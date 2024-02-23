@@ -3,7 +3,7 @@ module.exports = {
   extends: ['universe/native'],
   rules: {
     'import/order': [
-      'error',
+      'warn',
       {
         groups: ['builtin', 'external', 'internal'],
         pathGroups: [
@@ -11,6 +11,11 @@ module.exports = {
             pattern: 'react',
             group: 'external',
             position: 'before',
+          },
+          {
+            pattern: '~/**',
+            group: 'external',
+            position: 'after',
           },
         ],
         pathGroupsExcludedImportTypes: ['react'],
