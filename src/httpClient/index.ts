@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const httpClient = axios.create({
+export const httpClient = axios.create({
   baseURL: 'https://econominhas.com.br/api',
-  timeout: 5000,
+  timeout: 5000, // 5 seconds
 });
 
 httpClient.interceptors.request.use(
@@ -15,5 +15,3 @@ httpClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-export default httpClient;

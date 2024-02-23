@@ -1,23 +1,20 @@
-import React, {
-  useState,
-  useCallback,
+import {
+  ReactElement,
   createContext,
+  useCallback,
   useContext,
   useMemo,
+  useState,
 } from 'react';
 
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 
-import useTypedNavigation from '../hooks/useTypedNavigation';
+import { useTypedNavigation } from '~/hooks';
 
 export const AuthContext = createContext({} as AuthContextProps);
 
-export const AuthProvider = ({
-  children,
-}: {
-  children: React.ReactElement;
-}) => {
-  const [isSigned, setIsSigned] = useState<boolean>(false);
+export function AuthProvider({ children }: { children: ReactElement }) {
+  const [isSigned, setIsSigned] = useState(false);
   const [userInfo, setUserInfo] = useState<User>();
   const navigation = useTypedNavigation();
 
@@ -47,9 +44,9 @@ export const AuthProvider = ({
   return (
     <AuthContext.Provider value={valueMemo}>{children}</AuthContext.Provider>
   );
-};
+}
 
-interface AuthContextProps {
+export interface AuthContextProps {
   isSigned: boolean;
   userInfo: User | undefined;
   setUserInfo: React.Dispatch<React.SetStateAction<User | undefined>>;
@@ -57,9 +54,12 @@ interface AuthContextProps {
   handleSignOut(): void;
 }
 
-export const useAuth = (): AuthContextProps => {
-  const context = useContext(AuthContext);
-  return context as AuthContextProps;
-};
+export function useAuth() {
+  const context = useContext<AuthContextProps>(AuthContext);
 
-export default AuthProvider;
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
+}
