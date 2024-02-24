@@ -19,11 +19,16 @@ export const ThemeContext = createContext({} as ThemeContextProps);
 
 const fonts = {
   family: {
-    extraBold: 'NunitoSansExtraBold',
-    bold: 'NunitoSansBold',
-    regular: 'NunitoSansRegular',
-    light: 'NunitoSansLight',
-    medium: 'NunitoSansMedium',
+    extraBold: 'Lato_900Black',
+    extraBoldItalic: 'Lato_900Black_Italic',
+    bold: 'Lato_700Bold',
+    boldItalic: 'Lato_700Bold_Italic',
+    regular: 'Lato_400Regular',
+    regularItalic: 'Lato_400Regular_Italic',
+    light: 'Lato_300Light',
+    lightItalic: 'Lato_300Light_Italic',
+    medium: 'Lato_100Thin',
+    mediumItalic: 'Lato_100Thin_Italic',
   },
   sizes: {
     title: 32,
