@@ -15,5 +15,14 @@ web-build/
 
 coverage/
 
+# Pasta Android do React Native
+android/
 
+# Arquivos gerados pelo Android Studio
+*.iml
+*.gradle
+*.keystore
+build/
+
+yarn.lock
 
