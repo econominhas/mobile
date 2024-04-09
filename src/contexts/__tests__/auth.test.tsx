@@ -3,12 +3,12 @@ import React from 'react';
 import { User } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import {
-  render,
   fireEvent,
-  waitFor,
+  render,
   renderHook,
+  waitFor,
 } from '@testing-library/react-native';
-import { TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 import { AuthContext, AuthProvider, useAuth } from '../auth';
 
