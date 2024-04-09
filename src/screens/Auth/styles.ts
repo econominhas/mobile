@@ -7,6 +7,10 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
+export const ImageLogo = styled.Image`
+  width: 150px;
+  height: 150px;
+`;
 export const Title = styled.Text`
   font-size: ${({ theme }) => theme.fonts.sizes.title}px;
   color: ${({ theme }) => theme.colors.text};

@@ -6,6 +6,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 import * as S from './styles';
+import logoImg from '../../../assets/logo.png';
 import { useAuth } from '../../contexts/auth';
 import { useCustomTheme } from '../../contexts/customTheme';
 
@@ -25,6 +26,7 @@ function Auth() {
 
   return (
     <S.Container>
+      <S.ImageLogo resizeMode="contain" source={logoImg} />
       <S.Title>Econominhas</S.Title>
       <S.Subtitle>Faça login com um clique!</S.Subtitle>
 
